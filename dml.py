@@ -8,8 +8,6 @@ import os
 
 
 
-
-
 # mysqlbinlog解析binlog日志
 def binlog_output():
     binlog_file = sys.argv[1]
