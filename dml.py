@@ -1,30 +1,19 @@
 # coding:utf-8
 # 解析binlog，统计热度表，表的DML个数
 
-
 import sys
 import os
-
-
-
 
 # mysqlbinlog解析binlog日志
 def binlog_output():
     binlog_file = sys.argv[1]
     file_num = binlog_file.split('.')[1]
-
-
     binlog_log = 'binlog_%s.log' % file_num
     os.system('/usr/local/mysql5637/mysql/bin/mysqlbinlog -v --base64-output=decode-rows %s > %s' %(binlog_file, binlog_log))
-
-
     return binlog_log
-
 
 # 对
 def binlog_parse(binlog_log):
-
-
     delete_count = 0
     update_count = 0
     insert_count = 0
@@ -32,8 +21,7 @@ def binlog_parse(binlog_log):
     insert_li = []
     delete_li = []
     stop_time_li = []
-
-
+    
     binlog_f = open(binlog_log, 'r', encoding='utf-8')
     for line in binlog_f.readlines():
         if line.startswith('### INSERT INTO'):
@@ -51,14 +39,9 @@ def binlog_parse(binlog_log):
             stop_time_li.append(line)
     binlog_f.close()
     stop_time = stop_time_li[-1].split('server')[0].replace('#', '')
-
-
     start_time = '20' + start_time[:2] + '-' + start_time[2:4] + '-' + start_time[4:]
     stop_time = '20' + stop_time[:2] + '-' + stop_time[2:4] + '-' + stop_time[4:]
-
-
     return delete_count,update_count,insert_count,update_li,insert_li,delete_li,start_time,stop_time
-
 
 # 对库和表进统计排序
 def DbTableCount(arr):
@@ -66,11 +49,7 @@ def DbTableCount(arr):
     for i in set(arr):
         result[i] = arr.count(i)
     sort_li = sorted(result.items(), key=lambda x: x[1], reverse=True)
-
-
     return sort_li
-
-
 
 
 
